@@ -2,121 +2,139 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Advertising Test Page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ads</title>
 
 <style>
-  body {
-    margin: 0;
-    background: #040404;
-    overflow: hidden;
-    font-family: system-ui, sans-serif;
-    color: white;
-  }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: black;
+}
 
-  h1 {
-    position: fixed;
-    top: 10px;
-    width: 100%;
-    text-align: center;
-    font-size: 22px;
-    z-index: 20;
-    pointer-events: none;
-  }
+/* BACKGROUND AD */
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
 
-  /* DVD container (square) */
-  .dvd {
-    position: fixed;
-    width: 200px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    will-change: transform;
-    overflow: hidden;
-  }
+#bg iframe,
+#bg div {
+  width: 100% !important;
+  height: 100% !important;
+  transform: scale(1.3);
+  filter: contrast(1.1) saturate(1.2);
+}
 
-  /* squish inner ad into square */
-  .squish {
-    transform-origin: center;
-  }
+/* DVD ADS */
+.dvd {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  will-change: transform, filter;
+  transition: filter 0.08s, transform 0.08s;
+}
+
+.dvd.hit {
+  filter: brightness(1.4) contrast(1.4) hue-rotate(20deg);
+  transform: scale(1.06);
+}
+
+.squish {
+  transform-origin: center;
+}
 </style>
 </head>
 <body>
 
-<h1>Advertising Test Page</h1>
+<!-- BACKGROUND NATIVE AD -->
+<div id="bg">
+  <script async data-cfasync="false"
+    src="https://pl28488724.effectivegatecpm.com/b43599780ac65210c73e79337e2b51b6/invoke.js">
+  </script>
+  <div id="container-b43599780ac65210c73e79337e2b51b6"></div>
+</div>
 
-<!-- DVD 1: 468x60 -->
-<div class="dvd" id="dvd468">
-  <div class="squish" style="transform: scaleY(3.33);">
+<!-- 468x60 -->
+<div class="dvd" id="a">
+  <div class="squish" style="transform:scaleY(3.3)">
     <script>
-      atOptions = {
-        'key' : '9ef2a1af70ed076e937dd74c74b83f80',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
+      atOptions={key:"9ef2a1af70ed076e937dd74c74b83f80",format:"iframe",height:60,width:468,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/9ef2a1af70ed076e937dd74c74b83f80/invoke.js"></script>
   </div>
 </div>
 
-<!-- DVD 2: 160x300 -->
-<div class="dvd" id="dvd160">
-  <div class="squish" style="transform: scaleX(1.875);">
+<!-- 160x300 -->
+<div class="dvd" id="b">
+  <div class="squish" style="transform:scaleX(1.9)">
     <script>
-      atOptions = {
-        'key' : 'f6cb967bf45617e6a824b2c33857202e',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
+      atOptions={key:"f6cb967bf45617e6a824b2c33857202e",format:"iframe",height:300,width:160,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/f6cb967bf45617e6a824b2c33857202e/invoke.js"></script>
   </div>
 </div>
 
-<!-- DVD 3: 320x50 -->
-<div class="dvd" id="dvd320">
-  <div class="squish" style="transform: scaleY(4);">
+<!-- 320x50 -->
+<div class="dvd" id="c">
+  <div class="squish" style="transform:scaleY(4)">
     <script>
-      atOptions = {
-        'key' : 'e2559b20f5051305222949eb4b1ef0d9',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
+      atOptions={key:"e2559b20f5051305222949eb4b1ef0d9",format:"iframe",height:50,width:320,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/e2559b20f5051305222949eb4b1ef0d9/invoke.js"></script>
   </div>
 </div>
 
 <script>
-function dvdBounce(el, size, vx, vy) {
-  let x = Math.random() * (innerWidth - size);
-  let y = Math.random() * (innerHeight - size);
+function dvd(el,size){
+  let x=Math.random()*(innerWidth-size);
+  let y=Math.random()*(innerHeight-size);
+  let vx=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
+  let vy=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
 
-  function tick() {
-    x += vx;
-    y += vy;
+  function step(){
+    x+=vx;
+    y+=vy;
+    let hit=false;
 
-    if (x <= 0 || x + size >= innerWidth) vx *= -1;
-    if (y <= 40 || y + size >= innerHeight) vy *= -1;
+    if(x<=0||x+size>=innerWidth){
+      vx*=-1;
+      x+=vx*2;
+      hit=true;
+    }
+    if(y<=0||y+size>=innerHeight){
+      vy*=-1;
+      y+=vy*2;
+      hit=true;
+    }
 
-    el.style.transform = `translate(${x}px, ${y}px)`;
-    requestAnimationFrame(tick);
+    if(Math.abs(vx)<0.8) vx+=Math.sign(vx)*0.4;
+    if(Math.abs(vy)<0.8) vy+=Math.sign(vy)*0.4;
+
+    if(hit){
+      el.classList.add("hit");
+      setTimeout(()=>el.classList.remove("hit"),70);
+    }
+
+    el.style.transform=`translate(${x}px,${y}px)`;
+    requestAnimationFrame(step);
   }
-  tick();
+  step();
 }
 
-window.onload = () => {
-  dvdBounce(document.getElementById("dvd468"), 200, 1.6, 1.3);
-  dvdBounce(document.getElementById("dvd160"), 200, -1.4, 1.8);
-  dvdBounce(document.getElementById("dvd320"), 200, 1.2, -1.6);
+onload=()=>{
+  dvd(document.getElementById("a"),200);
+  dvd(document.getElementById("b"),200);
+  dvd(document.getElementById("c"),200);
 };
 </script>
 
