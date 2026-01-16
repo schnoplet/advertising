@@ -48,25 +48,27 @@ html, body {
   border-radius: 10px;
 }
 
-/* Smartlink DVD visual */
-.smartlink {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #ff0040, #ff9a00);
-  color: white;
-  font-family: system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
+iframe {
+  border: none;
 }
 
-iframe { border: none; }
-.squish { transform-origin: center; }
+.squish {
+  transform-origin: center;
+}
+
+/* ================= IMAGE SMARTLINK ADS ================= */
+.dvd img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* force squish/stretch */
+  pointer-events: none;
+}
+
+.dvd a {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -74,7 +76,7 @@ iframe { border: none; }
 <!-- ================= POPUNDER ================= -->
 <script src="https://woofbeginner.com/82/a9/bb/82a9bbcee30be3fc95b10520ea09f34f.js"></script>
 
-<!-- ================= BACKGROUND AD ================= -->
+<!-- ================= BACKGROUND AD (300x250) ================= -->
 <div id="bg">
   <script>
     atOptions = {
@@ -88,8 +90,9 @@ iframe { border: none; }
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
 
-<!-- ================= DISPLAY ADS (UNCHANGED) ================= -->
+<!-- ================= REAL BANNER DVD ADS ================= -->
 
+<!-- 320x50 -->
 <div class="dvd" id="dvd1">
   <div class="squish" style="transform:scaleY(4)">
     <script>
@@ -99,6 +102,7 @@ iframe { border: none; }
   </div>
 </div>
 
+<!-- 468x60 -->
 <div class="dvd" id="dvd2">
   <div class="squish" style="transform:scaleY(3.3)">
     <script>
@@ -108,6 +112,7 @@ iframe { border: none; }
   </div>
 </div>
 
+<!-- 160x300 -->
 <div class="dvd" id="dvd3">
   <div class="squish" style="transform:scaleX(1.9)">
     <script>
@@ -117,6 +122,7 @@ iframe { border: none; }
   </div>
 </div>
 
+<!-- 160x600 -->
 <div class="dvd" id="dvd4">
   <div class="squish" style="transform:scaleX(1.6)">
     <script>
@@ -126,6 +132,7 @@ iframe { border: none; }
   </div>
 </div>
 
+<!-- 728x90 -->
 <div class="dvd" id="dvd5">
   <div class="squish" style="transform:scaleY(2.2)">
     <script>
@@ -136,6 +143,20 @@ iframe { border: none; }
 </div>
 
 <script>
+/* ================= CONFIG ================= */
+const SMARTLINK_URL =
+  "https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6";
+
+const IMAGE_ADS = [
+  "images/image (1).png",
+  "images/image (2).png",
+  "images/image (3).png",
+  "images/image (4).png",
+  "images/image (5).png",
+  "images/image (6).png",
+  "images/image (7).png"
+];
+
 /* ================= ROYGBP TINTS ================= */
 const tints = [
   "hue-rotate(0deg)",
@@ -148,52 +169,60 @@ const tints = [
 
 /* ================= DVD PHYSICS ================= */
 function bounce(el, size) {
-  let x=Math.random()*(innerWidth-size);
-  let y=Math.random()*(innerHeight-size);
-  let vx=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
-  let vy=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
+  let x = Math.random() * (innerWidth - size);
+  let y = Math.random() * (innerHeight - size);
+  let vx = (Math.random()*2+1) * (Math.random()<0.5?-1:1);
+  let vy = (Math.random()*2+1) * (Math.random()<0.5?-1:1);
 
-  function step(){
-    x+=vx; y+=vy;
-    let hit=false;
+  function step() {
+    x += vx;
+    y += vy;
+    let hit = false;
 
-    if(x<=0||x+size>=innerWidth){vx*=-1;hit=true;}
-    if(y<=0||y+size>=innerHeight){vy*=-1;hit=true;}
+    if (x <= 0 || x + size >= innerWidth) {
+      vx *= -1;
+      hit = true;
+    }
+    if (y <= 0 || y + size >= innerHeight) {
+      vy *= -1;
+      hit = true;
+    }
 
-    if(hit) el.style.filter=tints[Math.floor(Math.random()*tints.length)];
-    el.style.transform=`translate(${x}px,${y}px)`;
+    if (hit) {
+      el.style.filter = tints[Math.floor(Math.random()*tints.length)];
+    }
+
+    el.style.transform = `translate(${x}px, ${y}px)`;
     requestAnimationFrame(step);
   }
   step();
 }
 
-/* ================= SMARTLINK SPAWNER ================= */
-const SMARTLINK_URL =
-  "https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6";
-
-function spawnSmartlinkDVDs(count){
-  for(let i=0;i<count;i++){
-    const d=document.createElement("div");
-    d.className="dvd";
-    d.innerHTML=`
-      <a class="smartlink" href="${SMARTLINK_URL}" target="_blank">
-        CLICK<br>ME
-      </a>`;
+/* ================= SPAWN IMAGE SMARTLINK DVDs ================= */
+function spawnImageSmartlinks() {
+  IMAGE_ADS.forEach(src => {
+    const d = document.createElement("div");
+    d.className = "dvd";
+    d.innerHTML = `
+      <a href="${SMARTLINK_URL}" target="_blank">
+        <img src="${src}" alt="">
+      </a>
+    `;
     document.body.appendChild(d);
-    bounce(d,200);
-  }
+    bounce(d, 200);
+  });
 }
 
 /* ================= INIT ================= */
-window.onload=()=>{
+window.onload = () => {
   bounce(dvd1,200);
   bounce(dvd2,200);
   bounce(dvd3,200);
   bounce(dvd4,200);
   bounce(dvd5,200);
 
-  // ALWAYS spawn multiple smartlinks
-  spawnSmartlinkDVDs(6);
+  // Add image-based smartlink DVDs (ADDITIVE)
+  spawnImageSmartlinks();
 };
 </script>
 
