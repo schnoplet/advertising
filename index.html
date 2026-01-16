@@ -24,13 +24,12 @@ html, body {
   justify-content: center;
 }
 
-/* the injected iframe */
 #bg iframe {
-  border: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform-origin: center;
+  border: none;
 }
 
 /* ===== DVD ADS ===== */
@@ -45,6 +44,7 @@ html, body {
   overflow: hidden;
   will-change: transform, filter;
   transition: filter 0.12s;
+  background: rgba(0,0,0,0.2);
 }
 
 iframe {
@@ -54,11 +54,32 @@ iframe {
 .squish {
   transform-origin: center;
 }
+
+/* Smartlink DVD */
+.smartlink {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff0040, #ff9a00);
+  color: white;
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+}
 </style>
 </head>
 <body>
 
-<!-- BACKGROUND: 300x250 BANNER -->
+<!-- POPUNDER (NOT VISUAL) -->
+<script src="https://pl28488797.effectivegatecpm.com/82/a9/bb/82a9bbcee30be3fc95b10520ea09f34f.js"></script>
+
+<!-- SOCIAL BAR (NOT DVD) -->
+<script src="https://pl28488800.effectivegatecpm.com/69/49/c3/6949c34c209a0ef6e4bd024c462cdc96.js"></script>
+
+<!-- BACKGROUND: 300x250 -->
 <div id="bg">
   <script>
     atOptions = {
@@ -76,13 +97,7 @@ iframe {
 <div class="dvd" id="dvd1">
   <div class="squish" style="transform:scaleY(4)">
     <script>
-      atOptions = {
-        key:"e2559b20f5051305222949eb4b1ef0d9",
-        format:"iframe",
-        height:50,
-        width:320,
-        params:{}
-      };
+      atOptions={key:"e2559b20f5051305222949eb4b1ef0d9",format:"iframe",height:50,width:320,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/e2559b20f5051305222949eb4b1ef0d9/invoke.js"></script>
   </div>
@@ -92,13 +107,7 @@ iframe {
 <div class="dvd" id="dvd2">
   <div class="squish" style="transform:scaleY(3.3)">
     <script>
-      atOptions = {
-        key:"9ef2a1af70ed076e937dd74c74b83f80",
-        format:"iframe",
-        height:60,
-        width:468,
-        params:{}
-      };
+      atOptions={key:"9ef2a1af70ed076e937dd74c74b83f80",format:"iframe",height:60,width:468,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/9ef2a1af70ed076e937dd74c74b83f80/invoke.js"></script>
   </div>
@@ -108,51 +117,50 @@ iframe {
 <div class="dvd" id="dvd3">
   <div class="squish" style="transform:scaleX(1.9)">
     <script>
-      atOptions = {
-        key:"f6cb967bf45617e6a824b2c33857202e",
-        format:"iframe",
-        height:300,
-        width:160,
-        params:{}
-      };
+      atOptions={key:"f6cb967bf45617e6a824b2c33857202e",format:"iframe",height:300,width:160,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/f6cb967bf45617e6a824b2c33857202e/invoke.js"></script>
   </div>
 </div>
 
-<!-- 728x90 -->
+<!-- 160x600 -->
 <div class="dvd" id="dvd4">
+  <div class="squish" style="transform:scaleX(1.6)">
+    <script>
+      atOptions={key:"67168233625f46e59c11ba6c0a93ecd9",format:"iframe",height:600,width:160,params:{}};
+    </script>
+    <script src="https://www.highperformanceformat.com/67168233625f46e59c11ba6c0a93ecd9/invoke.js"></script>
+  </div>
+</div>
+
+<!-- 728x90 -->
+<div class="dvd" id="dvd5">
   <div class="squish" style="transform:scaleY(2.2)">
     <script>
-      atOptions = {
-        key:"83b031f4af6f11fb8346ad180cd8949e",
-        format:"iframe",
-        height:90,
-        width:728,
-        params:{}
-      };
+      atOptions={key:"83b031f4af6f11fb8346ad180cd8949e",format:"iframe",height:90,width:728,params:{}};
     </script>
     <script src="https://www.highperformanceformat.com/83b031f4af6f11fb8346ad180cd8949e/invoke.js"></script>
   </div>
 </div>
 
+<!-- SMARTLINK DVD -->
+<div class="dvd" id="dvd6">
+  <a class="smartlink"
+     href="https://www.effectivegatecpm.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
+     target="_blank">
+    CLICK<br>ME
+  </a>
+</div>
+
 <script>
-/* ===== SCALE BACKGROUND TO COVER (CLICKABLE) ===== */
+/* ===== SCALE BACKGROUND ===== */
 function scaleBg() {
   const iframe = document.querySelector("#bg iframe");
   if (!iframe) return;
-
-  const vw = innerWidth;
-  const vh = innerHeight;
-  const scale = Math.max(vw / 300, vh / 250);
-
-  iframe.style.transform =
-    `translate(-50%, -50%) scale(${scale})`;
+  const scale = Math.max(innerWidth / 300, innerHeight / 250);
+  iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
-
-const bgObserver = new MutationObserver(scaleBg);
-bgObserver.observe(document.getElementById("bg"), { childList: true });
-
+new MutationObserver(scaleBg).observe(bg, {childList:true});
 window.addEventListener("resize", scaleBg);
 
 /* ===== ROYGBP TINTS ===== */
@@ -166,44 +174,32 @@ const tints = [
 ];
 
 function bounce(el, size) {
-  let x = Math.random() * (innerWidth - size);
-  let y = Math.random() * (innerHeight - size);
-  let vx = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
-  let vy = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
+  let x=Math.random()*(innerWidth-size);
+  let y=Math.random()*(innerHeight-size);
+  let vx=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
+  let vy=(Math.random()*2+1)*(Math.random()<0.5?-1:1);
 
-  function step() {
-    x += vx;
-    y += vy;
-    let hit = false;
+  function step(){
+    x+=vx; y+=vy;
+    let hit=false;
 
-    if (x <= 0 || x + size >= innerWidth) {
-      vx *= -1;
-      x = Math.max(0, Math.min(innerWidth - size, x));
-      hit = true;
-    }
+    if(x<=0||x+size>=innerWidth){vx*=-1;hit=true;}
+    if(y<=0||y+size>=innerHeight){vy*=-1;hit=true;}
 
-    if (y <= 0 || y + size >= innerHeight) {
-      vy *= -1;
-      y = Math.max(0, Math.min(innerHeight - size, y));
-      hit = true;
-    }
-
-    if (hit) {
-      el.style.filter =
-        tints[Math.floor(Math.random()*tints.length)];
-    }
-
-    el.style.transform = `translate(${x}px,${y}px)`;
+    if(hit) el.style.filter=tints[Math.floor(Math.random()*tints.length)];
+    el.style.transform=`translate(${x}px,${y}px)`;
     requestAnimationFrame(step);
   }
   step();
 }
 
-window.onload = () => {
+onload=()=>{
   bounce(dvd1,200);
   bounce(dvd2,200);
   bounce(dvd3,200);
   bounce(dvd4,200);
+  bounce(dvd5,200);
+  bounce(dvd6,200);
 };
 </script>
 
