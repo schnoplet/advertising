@@ -48,7 +48,7 @@ html, body {
   border-radius: 10px;
 }
 
-/* Smartlink DVD visual */
+/* Smartlink DVD */
 .smartlink {
   width: 100%;
   height: 100%;
@@ -88,7 +88,7 @@ iframe { border: none; }
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
 
-<!-- ================= EXISTING DVD ADS ================= -->
+<!-- ================= DISPLAY DVD ADS ================= -->
 
 <div class="dvd" id="dvd1">
   <div class="squish" style="transform:scaleY(4)">
@@ -135,7 +135,7 @@ iframe { border: none; }
   </div>
 </div>
 
-<!-- BASE SMARTLINK DVD -->
+<!-- BASE SMARTLINK -->
 <div class="dvd" id="dvd6">
   <a class="smartlink"
      href="https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
@@ -145,7 +145,7 @@ iframe { border: none; }
 </div>
 
 <script>
-/* ========== ROYGBP TINTS ========== */
+/* ================= ROYGBP TINTS ================= */
 const tints = [
   "hue-rotate(0deg)",
   "hue-rotate(30deg)",
@@ -155,7 +155,7 @@ const tints = [
   "hue-rotate(280deg)"
 ];
 
-/* ========== DVD PHYSICS ========== */
+/* ================= DVD PHYSICS ================= */
 function bounce(el, size) {
   let x=Math.random()*(innerWidth-size);
   let y=Math.random()*(innerHeight-size);
@@ -176,7 +176,7 @@ function bounce(el, size) {
   step();
 }
 
-/* ========== SPAWN EXTRA SMARTLINK DVDs ========== */
+/* ================= SPAWN EXTRA SMARTLINK DVDs ================= */
 function spawnExtraSmartlinks(count){
   for(let i=0;i<count;i++){
     const d=document.createElement("div");
@@ -192,30 +192,38 @@ function spawnExtraSmartlinks(count){
   }
 }
 
-/* ========== ADBLOCK DETECTION ========== */
-(function(){
-  const bait=document.createElement("div");
-  bait.className="adsbox ad ad-banner";
-  bait.style.position="absolute";
-  bait.style.height="10px";
-  document.body.appendChild(bait);
+/* ================= REAL ADBLOCK DETECTION ================= */
+async function detectAdblock(){
+  try {
+    // Known ad/tracker URL — blockers kill this instantly
+    const controller = new AbortController();
+    setTimeout(()=>controller.abort(), 400);
 
-  setTimeout(()=>{
-    if(bait.offsetHeight===0){
-      spawnExtraSmartlinks(5);
-    }
-    bait.remove();
-  },300);
-})();
+    await fetch(
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+      { signal: controller.signal, mode: "no-cors" }
+    );
 
-/* ========== INIT ========== */
-window.onload=()=>{
+    // If it loads → probably no adblock
+    return false;
+  } catch {
+    // Blocked / aborted / network error → adblock
+    return true;
+  }
+}
+
+/* ================= INIT ================= */
+window.onload=async()=>{
   bounce(dvd1,200);
   bounce(dvd2,200);
   bounce(dvd3,200);
   bounce(dvd4,200);
   bounce(dvd5,200);
   bounce(dvd6,200);
+
+  if(await detectAdblock()){
+    spawnExtraSmartlinks(5);
+  }
 };
 </script>
 
