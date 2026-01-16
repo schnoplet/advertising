@@ -14,7 +14,7 @@ html, body {
   background: black;
 }
 
-/* ===== BACKGROUND AD (DIRECT, NO IFRAME) ===== */
+/* ===== BACKGROUND AD ===== */
 #bg {
   position: fixed;
   inset: 0;
@@ -22,17 +22,15 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: blur(18px) brightness(0.6) saturate(1.3);
-  transform: scale(1.25);
-  pointer-events: none;
 }
 
-/* dark overlay for contrast */
-#bg-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  background: rgba(0,0,0,0.45);
+/* the injected iframe */
+#bg iframe {
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
 }
 
 /* ===== DVD ADS ===== */
@@ -60,7 +58,7 @@ iframe {
 </head>
 <body>
 
-<!-- BACKGROUND: 300x250 BANNER (DIRECT LOAD) -->
+<!-- BACKGROUND: 300x250 BANNER -->
 <div id="bg">
   <script>
     atOptions = {
@@ -73,7 +71,6 @@ iframe {
   </script>
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
-<div id="bg-overlay"></div>
 
 <!-- 320x50 -->
 <div class="dvd" id="dvd1">
@@ -140,6 +137,24 @@ iframe {
 </div>
 
 <script>
+/* ===== SCALE BACKGROUND TO COVER (CLICKABLE) ===== */
+function scaleBg() {
+  const iframe = document.querySelector("#bg iframe");
+  if (!iframe) return;
+
+  const vw = innerWidth;
+  const vh = innerHeight;
+  const scale = Math.max(vw / 300, vh / 250);
+
+  iframe.style.transform =
+    `translate(-50%, -50%) scale(${scale})`;
+}
+
+const bgObserver = new MutationObserver(scaleBg);
+bgObserver.observe(document.getElementById("bg"), { childList: true });
+
+window.addEventListener("resize", scaleBg);
+
 /* ===== ROYGBP TINTS ===== */
 const tints = [
   "hue-rotate(0deg)",
@@ -174,7 +189,8 @@ function bounce(el, size) {
     }
 
     if (hit) {
-      el.style.filter = tints[Math.floor(Math.random()*tints.length)];
+      el.style.filter =
+        tints[Math.floor(Math.random()*tints.length)];
     }
 
     el.style.transform = `translate(${x}px,${y}px)`;
