@@ -72,18 +72,42 @@ iframe {
   text-decoration: none;
   user-select: none;
 }
+
+/* ================= ADBLOCK OVERLAY ================= */
+#adblock-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  color: white;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+
+#adblock-overlay .box {
+  max-width: 520px;
+  padding: 30px;
+}
+
+#adblock-overlay h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+#adblock-overlay p {
+  opacity: 0.8;
+}
 </style>
 </head>
 <body>
 
-<!-- =====================================================
-     POPUNDER (ANTI-ADBLOCK JS SYNC) — ADDED ONLY
-===================================================== -->
+<!-- ================= POPUNDER ================= -->
 <script src="https://woofbeginner.com/82/a9/bb/82a9bbcee30be3fc95b10520ea09f34f.js"></script>
 
-<!-- =====================================================
-     BACKGROUND: 300x250 BANNER (UNCHANGED)
-===================================================== -->
+<!-- ================= BACKGROUND AD ================= -->
 <div id="bg">
   <script>
     atOptions = {
@@ -97,9 +121,8 @@ iframe {
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
 
-<!-- ================= EXISTING DVD BANNERS ================= -->
+<!-- ================= DVD ADS ================= -->
 
-<!-- 320x50 -->
 <div class="dvd" id="dvd1">
   <div class="squish" style="transform:scaleY(4)">
     <script>
@@ -109,7 +132,6 @@ iframe {
   </div>
 </div>
 
-<!-- 468x60 -->
 <div class="dvd" id="dvd2">
   <div class="squish" style="transform:scaleY(3.3)">
     <script>
@@ -119,7 +141,6 @@ iframe {
   </div>
 </div>
 
-<!-- 160x300 -->
 <div class="dvd" id="dvd3">
   <div class="squish" style="transform:scaleX(1.9)">
     <script>
@@ -129,7 +150,6 @@ iframe {
   </div>
 </div>
 
-<!-- 160x600 -->
 <div class="dvd" id="dvd4">
   <div class="squish" style="transform:scaleX(1.6)">
     <script>
@@ -139,7 +159,6 @@ iframe {
   </div>
 </div>
 
-<!-- 728x90 -->
 <div class="dvd" id="dvd5">
   <div class="squish" style="transform:scaleY(2.2)">
     <script>
@@ -149,9 +168,7 @@ iframe {
   </div>
 </div>
 
-<!-- =====================================================
-     SMARTLINK_1 — ADDED, NOTHING ELSE TOUCHED
-===================================================== -->
+<!-- ================= SMARTLINK DVD ================= -->
 <div class="dvd" id="dvd6">
   <a class="smartlink"
      href="https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
@@ -160,8 +177,38 @@ iframe {
   </a>
 </div>
 
+<!-- ================= ADBLOCK OVERLAY ================= -->
+<div id="adblock-overlay">
+  <div class="box">
+    <h1>Adblock Detected</h1>
+    <p>
+      This site is literally ads.<br>
+      Please disable your adblocker or whitelist this domain.
+    </p>
+    <p style="font-size:14px;opacity:0.6">
+      Refresh after disabling.
+    </p>
+  </div>
+</div>
+
 <script>
-/* ================= SCALE BACKGROUND ================= */
+/* ========== ADBLOCK DETECTION ========== */
+(function(){
+  const bait = document.createElement("div");
+  bait.className = "adsbox ad ad-banner";
+  bait.style.position = "absolute";
+  bait.style.height = "10px";
+  document.body.appendChild(bait);
+
+  setTimeout(() => {
+    if (bait.offsetHeight === 0) {
+      document.getElementById("adblock-overlay").style.display = "flex";
+    }
+    bait.remove();
+  }, 300);
+})();
+
+/* ========== SCALE BACKGROUND ========== */
 function scaleBg() {
   const iframe = document.querySelector("#bg iframe");
   if (!iframe) return;
@@ -171,7 +218,7 @@ function scaleBg() {
 new MutationObserver(scaleBg).observe(bg, {childList:true});
 window.addEventListener("resize", scaleBg);
 
-/* ================= ROYGBP TINTS ================= */
+/* ========== ROYGBP TINTS ========== */
 const tints = [
   "hue-rotate(0deg)",
   "hue-rotate(30deg)",
@@ -181,7 +228,7 @@ const tints = [
   "hue-rotate(280deg)"
 ];
 
-/* ================= DVD PHYSICS ================= */
+/* ========== DVD PHYSICS ========== */
 function bounce(el, size) {
   let x=Math.random()*(innerWidth-size);
   let y=Math.random()*(innerHeight-size);
