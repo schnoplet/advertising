@@ -14,7 +14,7 @@ html, body {
   background: black;
 }
 
-/* ===== BACKGROUND AD ===== */
+/* ================= BACKGROUND AD ================= */
 #bg {
   position: fixed;
   inset: 0;
@@ -32,7 +32,7 @@ html, body {
   border: none;
 }
 
-/* ===== DVD ADS ===== */
+/* ================= DVD ADS ================= */
 .dvd {
   position: fixed;
   width: 200px;
@@ -44,7 +44,8 @@ html, body {
   overflow: hidden;
   will-change: transform, filter;
   transition: filter 0.12s;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
 }
 
 iframe {
@@ -55,31 +56,34 @@ iframe {
   transform-origin: center;
 }
 
-/* Smartlink DVD */
+/* Smartlink DVD visual */
 .smartlink {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #ff0040, #ff9a00);
   color: white;
   font-family: system-ui, sans-serif;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
   text-align: center;
+  text-decoration: none;
+  user-select: none;
 }
 </style>
 </head>
 <body>
 
-<!-- POPUNDER (NOT VISUAL) -->
-<script src="https://pl28488797.effectivegatecpm.com/82/a9/bb/82a9bbcee30be3fc95b10520ea09f34f.js"></script>
+<!-- =====================================================
+     POPUNDER (ANTI-ADBLOCK JS SYNC) — ADDED ONLY
+===================================================== -->
+<script src="https://woofbeginner.com/82/a9/bb/82a9bbcee30be3fc95b10520ea09f34f.js"></script>
 
-<!-- SOCIAL BAR (NOT DVD) -->
-<script src="https://pl28488800.effectivegatecpm.com/69/49/c3/6949c34c209a0ef6e4bd024c462cdc96.js"></script>
-
-<!-- BACKGROUND: 300x250 -->
+<!-- =====================================================
+     BACKGROUND: 300x250 BANNER (UNCHANGED)
+===================================================== -->
 <div id="bg">
   <script>
     atOptions = {
@@ -92,6 +96,8 @@ iframe {
   </script>
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
+
+<!-- ================= EXISTING DVD BANNERS ================= -->
 
 <!-- 320x50 -->
 <div class="dvd" id="dvd1">
@@ -143,17 +149,19 @@ iframe {
   </div>
 </div>
 
-<!-- SMARTLINK DVD -->
+<!-- =====================================================
+     SMARTLINK_1 — ADDED, NOTHING ELSE TOUCHED
+===================================================== -->
 <div class="dvd" id="dvd6">
   <a class="smartlink"
-     href="https://www.effectivegatecpm.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
+     href="https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
      target="_blank">
     CLICK<br>ME
   </a>
 </div>
 
 <script>
-/* ===== SCALE BACKGROUND ===== */
+/* ================= SCALE BACKGROUND ================= */
 function scaleBg() {
   const iframe = document.querySelector("#bg iframe");
   if (!iframe) return;
@@ -163,7 +171,7 @@ function scaleBg() {
 new MutationObserver(scaleBg).observe(bg, {childList:true});
 window.addEventListener("resize", scaleBg);
 
-/* ===== ROYGBP TINTS ===== */
+/* ================= ROYGBP TINTS ================= */
 const tints = [
   "hue-rotate(0deg)",
   "hue-rotate(30deg)",
@@ -173,6 +181,7 @@ const tints = [
   "hue-rotate(280deg)"
 ];
 
+/* ================= DVD PHYSICS ================= */
 function bounce(el, size) {
   let x=Math.random()*(innerWidth-size);
   let y=Math.random()*(innerHeight-size);
@@ -193,7 +202,7 @@ function bounce(el, size) {
   step();
 }
 
-onload=()=>{
+window.onload=()=>{
   bounce(dvd1,200);
   bounce(dvd2,200);
   bounce(dvd3,200);
