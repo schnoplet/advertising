@@ -14,18 +14,28 @@ html, body {
   background: black;
 }
 
-/* ===== BACKGROUND NATIVE AD ===== */
-#background {
+/* ===== BACKGROUND LAYER ===== */
+#bg-wrap {
   position: fixed;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
+  overflow: hidden;
+  filter: blur(18px) brightness(0.6) saturate(1.3);
+  transform: scale(1.2);
 }
 
-#background iframe,
-#background div {
+#bg-wrap iframe,
+#bg-wrap div {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* dark overlay so DVDs pop */
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0,0,0,0.45);
 }
 
 /* ===== DVD ADS ===== */
@@ -33,21 +43,19 @@ html, body {
   position: fixed;
   width: 200px;
   height: 200px;
-  z-index: 10;
-  background: rgba(0,0,0,0.15);
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  will-change: transform;
-  border-radius: 8px;
+  will-change: transform, filter;
+  transition: filter 0.12s;
 }
 
-.dvd iframe {
+iframe {
   border: none;
 }
 
-/* squash ads into square */
 .squish {
   transform-origin: center;
 }
@@ -55,13 +63,14 @@ html, body {
 </head>
 <body>
 
-<!-- BACKGROUND: NATIVE BANNER -->
-<div id="background">
+<!-- BACKGROUND NATIVE BANNER -->
+<div id="bg-wrap">
   <script async data-cfasync="false"
     src="https://pl28488724.effectivegatecpm.com/b43599780ac65210c73e79337e2b51b6/invoke.js">
   </script>
   <div id="container-b43599780ac65210c73e79337e2b51b6"></div>
 </div>
+<div id="bg-overlay"></div>
 
 <!-- 320x50 -->
 <div class="dvd" id="dvd1">
@@ -83,7 +92,7 @@ html, body {
   </div>
 </div>
 
-<!-- 160x300 #1 -->
+<!-- 160x300 -->
 <div class="dvd" id="dvd3">
   <div class="squish" style="transform:scaleX(1.9)">
     <script>
@@ -93,18 +102,8 @@ html, body {
   </div>
 </div>
 
-<!-- 160x300 #2 -->
-<div class="dvd" id="dvd4">
-  <div class="squish" style="transform:scaleX(1.9)">
-    <script>
-      atOptions={key:"f6cb967bf45617e6a824b2c33857202e",format:"iframe",height:300,width:160,params:{}};
-    </script>
-    <script src="https://www.highperformanceformat.com/f6cb967bf45617e6a824b2c33857202e/invoke.js"></script>
-  </div>
-</div>
-
 <!-- 728x90 -->
-<div class="dvd" id="dvd5">
+<div class="dvd" id="dvd4">
   <div class="squish" style="transform:scaleY(2.2)">
     <script>
       atOptions={key:"83b031f4af6f11fb8346ad180cd8949e",format:"iframe",height:90,width:728,params:{}};
@@ -114,6 +113,15 @@ html, body {
 </div>
 
 <script>
+const colors = [
+  "hue-rotate(0deg)",    // red
+  "hue-rotate(30deg)",   // orange
+  "hue-rotate(60deg)",   // yellow
+  "hue-rotate(120deg)",  // green
+  "hue-rotate(200deg)",  // blue
+  "hue-rotate(280deg)"   // purple
+];
+
 function bounce(el, size) {
   let x = Math.random() * (innerWidth - size);
   let y = Math.random() * (innerHeight - size);
@@ -123,19 +131,23 @@ function bounce(el, size) {
   function step() {
     x += vx;
     y += vy;
+    let hit = false;
 
     if (x <= 0 || x + size >= innerWidth) {
       vx *= -1;
       x = Math.max(0, Math.min(innerWidth - size, x));
+      hit = true;
     }
 
     if (y <= 0 || y + size >= innerHeight) {
       vy *= -1;
       y = Math.max(0, Math.min(innerHeight - size, y));
+      hit = true;
     }
 
-    if (Math.abs(vx) < 0.8) vx += Math.sign(vx)*0.4;
-    if (Math.abs(vy) < 0.8) vy += Math.sign(vy)*0.4;
+    if (hit) {
+      el.style.filter = colors[Math.floor(Math.random()*colors.length)];
+    }
 
     el.style.transform = `translate(${x}px,${y}px)`;
     requestAnimationFrame(step);
@@ -143,12 +155,11 @@ function bounce(el, size) {
   step();
 }
 
-window.onload = () => {
+onload = () => {
   bounce(dvd1,200);
   bounce(dvd2,200);
   bounce(dvd3,200);
   bounce(dvd4,200);
-  bounce(dvd5,200);
 };
 </script>
 
