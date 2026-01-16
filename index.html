@@ -48,14 +48,6 @@ html, body {
   border-radius: 10px;
 }
 
-iframe {
-  border: none;
-}
-
-.squish {
-  transform-origin: center;
-}
-
 /* Smartlink DVD visual */
 .smartlink {
   width: 100%;
@@ -73,33 +65,8 @@ iframe {
   user-select: none;
 }
 
-/* ================= ADBLOCK OVERLAY ================= */
-#adblock-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  color: white;
-  z-index: 999999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  font-family: system-ui, sans-serif;
-  text-align: center;
-}
-
-#adblock-overlay .box {
-  max-width: 520px;
-  padding: 30px;
-}
-
-#adblock-overlay h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-#adblock-overlay p {
-  opacity: 0.8;
-}
+iframe { border: none; }
+.squish { transform-origin: center; }
 </style>
 </head>
 <body>
@@ -121,7 +88,7 @@ iframe {
   <script src="https://www.highperformanceformat.com/3adf46ec04830602cec1ed578ec11fc8/invoke.js"></script>
 </div>
 
-<!-- ================= DVD ADS ================= -->
+<!-- ================= EXISTING DVD ADS ================= -->
 
 <div class="dvd" id="dvd1">
   <div class="squish" style="transform:scaleY(4)">
@@ -168,7 +135,7 @@ iframe {
   </div>
 </div>
 
-<!-- ================= SMARTLINK DVD ================= -->
+<!-- BASE SMARTLINK DVD -->
 <div class="dvd" id="dvd6">
   <a class="smartlink"
      href="https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
@@ -177,47 +144,7 @@ iframe {
   </a>
 </div>
 
-<!-- ================= ADBLOCK OVERLAY ================= -->
-<div id="adblock-overlay">
-  <div class="box">
-    <h1>Adblock Detected</h1>
-    <p>
-      This site is literally ads.<br>
-      Please disable your adblocker or whitelist this domain.
-    </p>
-    <p style="font-size:14px;opacity:0.6">
-      Refresh after disabling.
-    </p>
-  </div>
-</div>
-
 <script>
-/* ========== ADBLOCK DETECTION ========== */
-(function(){
-  const bait = document.createElement("div");
-  bait.className = "adsbox ad ad-banner";
-  bait.style.position = "absolute";
-  bait.style.height = "10px";
-  document.body.appendChild(bait);
-
-  setTimeout(() => {
-    if (bait.offsetHeight === 0) {
-      document.getElementById("adblock-overlay").style.display = "flex";
-    }
-    bait.remove();
-  }, 300);
-})();
-
-/* ========== SCALE BACKGROUND ========== */
-function scaleBg() {
-  const iframe = document.querySelector("#bg iframe");
-  if (!iframe) return;
-  const scale = Math.max(innerWidth / 300, innerHeight / 250);
-  iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
-}
-new MutationObserver(scaleBg).observe(bg, {childList:true});
-window.addEventListener("resize", scaleBg);
-
 /* ========== ROYGBP TINTS ========== */
 const tints = [
   "hue-rotate(0deg)",
@@ -249,6 +176,39 @@ function bounce(el, size) {
   step();
 }
 
+/* ========== SPAWN EXTRA SMARTLINK DVDs ========== */
+function spawnExtraSmartlinks(count){
+  for(let i=0;i<count;i++){
+    const d=document.createElement("div");
+    d.className="dvd";
+    d.innerHTML=`
+      <a class="smartlink"
+         href="https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6"
+         target="_blank">
+         CLICK<br>ME
+      </a>`;
+    document.body.appendChild(d);
+    bounce(d,200);
+  }
+}
+
+/* ========== ADBLOCK DETECTION ========== */
+(function(){
+  const bait=document.createElement("div");
+  bait.className="adsbox ad ad-banner";
+  bait.style.position="absolute";
+  bait.style.height="10px";
+  document.body.appendChild(bait);
+
+  setTimeout(()=>{
+    if(bait.offsetHeight===0){
+      spawnExtraSmartlinks(5);
+    }
+    bait.remove();
+  },300);
+})();
+
+/* ========== INIT ========== */
 window.onload=()=>{
   bounce(dvd1,200);
   bounce(dvd2,200);
