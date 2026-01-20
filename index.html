@@ -148,6 +148,12 @@ iframe {
 const SMARTLINK_URL =
   "https://woofbeginner.com/aw0vp65yt?key=1fc7486e61d94bd778bad9a3d00074c6";
 
+const API_SMARTLINK_URL =
+  "https://skinnycrawlinglax.com/api/users?token=L2ljODY0OHg5Z3o_a2V5PTEwYWZhZWMzNTQwNGZmZDVlZGJhZDAxMzFiYjM4ZWU2JnN1Ym1ldHJpYz0yODM4ODI5OA";
+
+/* chances */
+const SECOND_TAB_CHANCE = 0.25; // 25% chance to open a second tab
+
 const IMAGE_ADS = [
   "images/image (1).png",
   "images/image (2).png",
@@ -214,6 +220,19 @@ function spawnImageSmartlinks() {
   });
 }
 
+/* ================= AUTO OPEN (50/50 + POSSIBLE DOUBLE) ================= */
+function openSmartlinkAfterDelay() {
+  function pickLink() {
+    return Math.random() < 0.5 ? SMARTLINK_URL : API_SMARTLINK_URL;
+  }
+
+  window.open(pickLink(), "_blank", "noopener,noreferrer");
+
+  if (Math.random() < SECOND_TAB_CHANCE) {
+    window.open(pickLink(), "_blank", "noopener,noreferrer");
+  }
+}
+
 /* ================= INIT ================= */
 window.onload = () => {
   bounce(dvd1,200);
@@ -224,6 +243,9 @@ window.onload = () => {
 
   // Add image-based smartlink DVDs (ADDITIVE)
   spawnImageSmartlinks();
+
+  // Auto-open after 2.5s
+  setTimeout(openSmartlinkAfterDelay, 2500);
 };
 </script>
 
